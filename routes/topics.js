@@ -9,22 +9,28 @@ var Models = require('../models');
 // GET /topics
 router.get('/', function(req, res, next) {
     // Hae kaikki aihealueet tässä (Vinkki: findAll)
-    res.send(200);
+    Models.Topic.findAll().then(function (topics) {
+        res.json(topics);
+    });
+//    res.json([{test: "test"}]);
 });
 
 // GET /topics/:id
 router.get('/:id', function(req, res, next) {
   // Hae aihealue tällä id:llä tässä (Vinkki: findOne)
   var topicId = req.params.id;
-  res.send(200);
+  Models.Topic.findOne(topicId).then(function (topic) {
+      res.json(topic);
+  })
 });
 
 // POST /topics
 router.post('/', function(req, res, next) {
   // Lisää tämä aihealue
   var topicToAdd = req.body;
-  // Palauta vastauksena lisätty aihealue
-  res.send(200);
+  Models.Topic.create(topicToAdd).then(function (topic) {
+      res.json(topic);
+  });
 });
 
 // POST /topics/:id/message
