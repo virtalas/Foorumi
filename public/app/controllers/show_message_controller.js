@@ -1,4 +1,8 @@
 FoorumApp.controller('ShowMessageController', function ($scope, $routeParams, Api) {
+    $scope.newReply = {
+        content: ""
+    };
+    
     Api.getMessage($routeParams.id).success(function (message) {
         $scope.message = message;
         console.log($scope.message);

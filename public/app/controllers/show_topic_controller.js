@@ -1,4 +1,9 @@
 FoorumApp.controller('ShowTopicController', function ($scope, $routeParams, $location, Api) {
+    $scope.newMessage = {
+        title: "",
+        content: ""
+    }
+    
     Api.getTopic($routeParams.id).success(function (topic) {
         $scope.topic = topic;
     });

@@ -57,8 +57,6 @@ router.get('/logged-in', function (req, res, next) {
             res.json(user);
         });
     }
-
-    res.send(200);
 });
 
 // GET /users/logout
