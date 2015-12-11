@@ -20,15 +20,22 @@ router.get('/:id', function (req, res, next) {
     // Hae aihealue tällä id:llä tässä (Vinkki: findOne)
     var topicId = req.params.id;
     Models.Topic.findOne({
-        where: {id: topicId},
-        include: {model: Models.Message}
+        where: {
+            id: topicId
+        },
+        include: {
+            model: Models.Message,
+            include: {
+                model: Models.User
+            }
+        }
     }).then(function (topic) {
         res.json(topic);
     })
 });
 
 // POST /topics
-router.post('/', function (req, res, next) {
+router.post('/', authentication, function (req, res, next) {
     // Lisää tämä aihealue
     var topicToAdd = req.body;
     Models.Topic.create(topicToAdd).then(function (topic) {
@@ -37,12 +44,13 @@ router.post('/', function (req, res, next) {
 });
 
 // POST /topics/:id/message
-router.post('/:id/message', function (req, res, next) {
+router.post('/:id/message', authentication, function (req, res, next) {
     // Lisää tällä id:llä varustettuun aihealueeseen...
     var topicId = req.params.id;
     // ...tämä viesti (Vinkki: lisää ensin messageToAdd-objektiin kenttä TopicId, jonka arvo on topicId-muuttujan arvo ja käytä sen jälkeen create-funktiota)
     var messageToAdd = req.body;
     messageToAdd.TopicId = topicId;
+    messageToAdd.UserId = req.session.userId;
 
     Models.Message.create(messageToAdd).then(function (message) {
         res.json(message);
